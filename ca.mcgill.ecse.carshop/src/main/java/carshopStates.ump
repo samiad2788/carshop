@@ -1,0 +1,48 @@
+class Appointment{
+  States{
+   Booking {
+  	SetMain(Service s, TimeSlot t) / { setMainService(s, t); } -> Booking;
+  	AddBooking(Service s, TimeSlot t) / { this.addServiceBooking(s, t); } -> Booking;
+    UpdateDateTimes(Date d, List<Time> startTimes, List<Time> endTimes) / {updateDateTimes(d, startTimes, endTimes); } -> Booking;
+    Cancel / {delete();} -> FinalState;
+    
+    Start -> AppointmentInProgress;
+    
+    NoShow / {customer.incrNoShow(); delete(); } -> FinalState;
+   }
+   
+   AppointmentInProgress {
+   	Start -> AppointmentInProgress;
+   	AddBooking(Service s, TimeSlot t) / {this.addServiceBooking(s, t); } -> AppointmentInProgress;
+   	End / {delete(); } -> FinalState;
+   }
+   
+   final FinalState {
+   
+   } 
+  }
+  
+  private void setMainService(Service s, TimeSlot t) {
+  	if(bookableService instanceof Service) {
+	    this.setBookableService(s);
+	    if(this.getServiceBookings().size() == 0) {
+	        this.addServiceBooking(s, t);
+	    }
+	    else {
+	        ServiceBooking booking = this.getServiceBooking(0);
+	        booking.setService(s);
+	        booking.setTimeSlot(t);
+	    }
+	}
+  }
+  
+  private void updateDateTimes(Date d, List<Time> startTimes, List<Time> endTimes) {
+  	for(int i = 0; i < startTimes.size(); i++) {
+  	  Time startTime = startTimes.get(i);
+  	  Time endTime = endTimes.get(i);
+  	  
+  	  ServiceBooking booking = this.getServiceBooking(i);
+  	  booking.setTimeSlot(new TimeSlot(d, startTime, d, endTime, carShop));
+  	}
+  }
+}

@@ -1,0 +1,55 @@
+namespace ca.mcgill.ecse.carshop.controller;
+
+class TOAppointment {
+	depend java.util.List;
+	depend java.sql.Time;
+	depend java.sql.Date;
+
+	username;
+	name;
+	Date date;
+	List<String> services;
+	List<Time> startTimes;
+	List<Time> endTimes;
+	Boolean isComboApp;
+}
+
+class TOBookableService {
+	name;
+	Boolean isCombo;
+}
+
+class TOUser {
+	username;
+	Boolean isOwner;
+	Boolean isCustomer;
+	Boolean isTechnician;
+}
+
+class TOBusiness {
+	String name;
+	String address;
+	String email;
+	String phoneNumber;
+}
+
+class TOService {
+  String name;
+  Integer duration;
+  TOGarage garage;
+}
+
+class TOServiceCombo {
+  depend java.util.List;
+  
+  String name;
+  String main;
+  List<String> required;
+  List<String> optional;
+}
+
+
+class TOGarage {
+  String technicianUsername;
+  String technicianType;
+}
